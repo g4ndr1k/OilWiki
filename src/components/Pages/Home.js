@@ -72,7 +72,6 @@ const itemData = [
   },
   {
     img: 'https://source.unsplash.com/_kYLqaw9ND8',
-    title: 'Mushrooms',
     rows: 2,
     cols: 2,
   },
