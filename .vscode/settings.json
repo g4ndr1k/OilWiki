@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/16d7b026-4abb-4983-a342-605f14b470d4/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/oilwiki",
+    "appService.deploySubpath": "."
+}
