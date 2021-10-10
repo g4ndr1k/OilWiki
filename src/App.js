@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider } from '@mui/material';
 import AuthContext from './components/context/loggin-context';
+import ColorModeContext from './components/context/colormode-contex';
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 import TopNavigation from './components/Navigation/TopNavigation';
 import Login from './components/Pages/Login';
@@ -16,26 +18,53 @@ const App = () => {
       setIsLoggedIn(true);
     }
   };
+
+  const [mode, setMode] = useState('light');
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    []
+  );
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
   return (
     <AuthContext.Provider value={{ isLoggedIn: isLoggedIn }}>
-      <CssBaseline />
-      <Router>
-        <TopNavigation />
-        <Switch>
-          {!isLoggedIn && (
-            <Route exact path="/">
-              {' '}
-              <Login onLogin={loginHandler} />
-            </Route>
-          )}
-          <ProtectedRoute exact path="/" component={Home} />
-          <ProtectedRoute exact path="/dewasa" component={AdultSymptom} />
-          <ProtectedRoute exact path="/bayidanbalita" component={BabySymptom} />
-        </Switch>
-      </Router>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <TopNavigation />
+            <Switch>
+              {!isLoggedIn && (
+                <Route exact path="/">
+                  {' '}
+                  <Login onLogin={loginHandler} />
+                </Route>
+              )}
+              <ProtectedRoute exact path="/" component={Home} />
+              <ProtectedRoute exact path="/dewasa" component={AdultSymptom} />
+              <ProtectedRoute
+                exact
+                path="/bayidanbalita"
+                component={BabySymptom}
+              />
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
     </AuthContext.Provider>
   );
 };
 
 export default App;
-
