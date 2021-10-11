@@ -3,23 +3,38 @@ import {
   Card,
   CardContent,
   Divider,
-  TextField,
+  OutlinedInput,
   Button,
   CardActions,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = (props) => {
-  const [value, setValue] = useState('');
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+  });
   const inputRef = useRef(null);
 
   const onChangeHandler = (event) => {
-    setValue(event.target.value);
+    setValues(event.target.value);
     inputRef.current.value = event.target.value;
   };
 
+  const onClickShowPasswordHandler = () => {
+    setValues({
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const onMouseDownPasswordHandler = (event) => {
+    event.preventDefault();
+  };
+
   const onClickHandler = () => {
-    inputRef && console.log('ini dia' + inputRef.current.value);
-    props.onLogin(inputRef.current.value);
+    inputRef && props.onLogin(inputRef.current.value);
   };
   return (
     <Card width="100%">
@@ -27,15 +42,27 @@ const Login = (props) => {
         <Divider variant="middle" textAlign="left">
           Password
         </Divider>
-        <TextField
+        <OutlinedInput
           id="outlined-password-input"
           label="Password"
-          type="password"
-          size='small'
+          type={values.showPassword ? 'text' : 'password'}
+          size="small"
           autoComplete="current-password"
-          value={value}
+          value={values.password}
           onChange={onChangeHandler}
           ref={inputRef}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={onClickShowPasswordHandler}
+                onMouseDown={onMouseDownPasswordHandler}
+                edge="end"
+              >
+                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
         />
       </CardContent>
       <CardActions>
@@ -48,5 +75,3 @@ const Login = (props) => {
 };
 
 export default Login;
-
-//  window.location.pathname = '/';

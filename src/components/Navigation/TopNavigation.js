@@ -16,7 +16,7 @@ const rightLink = {
 const TopNavigation = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
-  
+
   return (
     <div>
       <AppBar position="fixed">
@@ -59,9 +59,9 @@ const TopNavigation = () => {
             color="inherit"
           >
             {theme.palette.mode === 'dark' ? (
-              <Brightness7Icon />
-            ) : (
               <Brightness4Icon />
+            ) : (
+              <Brightness7Icon />
             )}
           </IconButton>
         </Toolbar>
